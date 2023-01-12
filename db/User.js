@@ -8,14 +8,36 @@ module.exports = function (sequelize) {
       primaryKey: true,
       allowNull: false
     },
+    login: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    token: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    role: {
+      type: Sequelize.INTEGER,
+      defaultValue: "guest",
+      allowNull: false
+    },
+   
     name: {
       type: Sequelize.STRING,
       allowNull: false
     },
     age: {
       type: Sequelize.INTEGER,
-      allowNull: false
-    }
+      // allowNull: true
+    },
   },{
     timestamps: false
   })

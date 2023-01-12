@@ -9,6 +9,11 @@ module.exports = function (sequelize) {
       primaryKey: true,
       // allowNull: true,
     },
+    uid: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -24,7 +29,7 @@ module.exports = function (sequelize) {
       allowNull: true,
       defaultValue:  '2022-08-17'
     },
-    count: {
+    sup_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 1
