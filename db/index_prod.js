@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 
-sequelize = new Sequelize("usersdb", "root", "admin", {
+sequelize = new Sequelize("usersdb", "root", "34kdoOVL_dfPA_VJHG9W", {
   dialect: "mysql",
   host: process.env.MYSQL_HOST,
   define: {
@@ -10,7 +10,6 @@ sequelize = new Sequelize("usersdb", "root", "admin", {
  
  User = require('./User')(sequelize)
  Order = require('./Order')(sequelize)
- Sup = require('./Sup')(sequelize)
 // синхронизация с бд, после успшной синхронизации запускаем сервер
 // sequelize.sync().then(()=>{
 //   app.listen(3000, function(){
@@ -23,8 +22,7 @@ sequelize = new Sequelize("usersdb", "root", "admin", {
 module.exports = {
   sequelize: sequelize,
   user: User,
-  order: Order,
-  sup: Sup,
+  order: Order
 } 
 
 

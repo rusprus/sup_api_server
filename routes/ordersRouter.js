@@ -4,6 +4,8 @@ const ordersRouter = express.Router();
 const ordersController = require("../controllers/ordersController.js");
 
 ordersRouter.use(function (req, res, next) {
+    console.log('ordersRouter')
+    console.log('req.user')
         if (req.user) {
             next()
         } else {

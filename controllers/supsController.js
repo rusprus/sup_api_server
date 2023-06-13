@@ -1,12 +1,12 @@
-const OrdersService = require('../services/ordersService')
+const SupsService = require('../services/supsService')
 
 
 exports.add = async function (req, res) {
 
-  await OrdersService.add(req.body, req.user.id).then(function (result) {
+  await SupsService.add(req.body, req.user.id).then(function (result) {
     if (result.status) {
       // console.log(result )
-      res.json(result.order)
+      res.json(result.sup)
     } else {
       res.json({
         status: false
@@ -16,7 +16,10 @@ exports.add = async function (req, res) {
 };
 
 exports.update = async function (req, res) {
-  await OrdersService.update(req.body, req.user.id).then((result) => {
+  // console.log(req.file.fieldname)
+  // console.log(req.file.mimetype)
+  let name = 'uploads/' + req.file.filename 
+  await SupsService.update(req.body, req.user.id, name).then((result) => {
     if (result.status) {
       res.json({
         status: true
@@ -30,7 +33,7 @@ exports.update = async function (req, res) {
 };
 
 exports.delete = async function (req, res) {
-  OrdersService.delete(req.body, req.user.id).then((result) => {
+  SupsService.delete(req.body, req.user.id).then((result) => {
     if (result.status) {
       res.json({ status: true })
     } else {
@@ -41,18 +44,34 @@ exports.delete = async function (req, res) {
 
 // получение данных
 exports.all = async function (req, res) {
-  
+
   if (!req.user) {
     res.json({ message: 'Accsses denied', status: false })
   } else {
     // console.log(req.user)
-    await OrdersService.all(req.user.id).then((result) => {
+    await SupsService.all(req.user.id).then((result) => {
       if (result.status) {
-        res.json({ orders: result.orders, status: true })
+        res.json({ sups: result.sups, status: true })
       } else {
         res.json({ status: false })
       }
     }).catch(err => console.log(err));
   }
 
+};
+
+exports.fresh = async function (req, res) {
+
+  // res.json(result.sup)
+
+  // await SupsService.add(req.body, req.user.id).then(function (result) {
+  //   if (result.status) {
+  //     // console.log(result )
+  //     res.json(result.sup)
+  //   } else {
+  //     res.json({
+  //       status: false
+  //     })
+  //   }
+  // })
 };

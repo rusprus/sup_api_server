@@ -4,6 +4,7 @@ const { tokenKey } = require("../config");
 
 const UsersService = require('../services/usersService')
 
+
 exports.signup = function (req, res) {
   UsersService.getByLogin(req.body.login).then(async (data) => {
     if (data.status) {
@@ -56,6 +57,7 @@ exports.login = function (request, response) {
           let token = jwt.sign({ id: data.id }, tokenKey)
           data.token = token
           await data.save()
+          // console.log('Сохраненный токен ' + data.token)
           response.json({
             token: token,
             userRole: data.role,
@@ -67,12 +69,44 @@ exports.login = function (request, response) {
     }).catch(err => console.log(err));
 };
 
+
+exports.updatePass = async function (req, res) {
+
+  if (req.user.hasOwnProperty('id') && req.body.hasOwnProperty('oldPass') && req.body.hasOwnProperty('newPass')) {
+
+    let user = await UsersService.getById(req.user.id);
+
+    const correctPassword = await argon2.verify(user.user.password, req.body.oldPass);
+      if (correctPassword) {
+
+      user.user.password = await argon2.hash(req.body.newPass);
+
+      const result = await UsersService.update(user.user)
+
+
+      res.json({ status: result.status })
+
+    } else {
+      res.json({ status: false })
+    }
+
+  } else {
+    res.json({ status: false })
+  }
+}
+
+
+
+
 exports.authByToken = (req, res, next) => {
-  if (req.headers.authorization) {
-    // console.log(req.headers.authorization.split(' ')[1])
+  if (req.headers.xauthorization) {
     try {
+
+      console.log('req.headers.xauthorization')
+      console.log(req.headers.xauthorization)
+
       jwt.verify(
-        req.headers.authorization.split(' ')[1],
+        req.headers.xauthorization.split(',')[0].split(' ')[1],
         tokenKey,
         async (err, payload) => {
           if (err) next()

@@ -8,10 +8,21 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
+            "skipFiles": ["<node_internals>/**"],
             "program": "${workspaceFolder}/bin/www"
         }
     ]
 }
+
+// {
+//     "version": "0.2.0",
+//     "configurations": [
+//         {
+//             "name": "Docker Node.js Launch",
+//             "type": "docker",
+//             "request": "launch",
+//             "preLaunchTask": "docker-run: debug",
+//             "platform": "node"
+//         }
+//     ]
+// }

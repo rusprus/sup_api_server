@@ -24,8 +24,8 @@ exports.add = async function (user) {
 }
 
 
-exports.update = async function (data) {
-    return await User.findByPk(data.id).then(async function (user) {
+exports.update = async function (data, id) {
+    return await User.findByPk(id).then(async function (user) {
         if (!user) {
             return {
                 status: false
@@ -33,11 +33,13 @@ exports.update = async function (data) {
         } else {
             return await User.update({
                 name: data.name,
-                dateStart: data.dateStart,
-                dateEnd: data.dateEnd,
-                count: data.count,
-                note: data.note,
+                age: data.age,
+                role: data.role,
+                email: data.email,
+                photo : data.photo ,
                 status: data.status,
+                note_eml: data.note_eml,
+                note_tlg: data.note_tlg,
             }, {
                 where: {
                     id: user.id

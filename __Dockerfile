@@ -1,0 +1,31 @@
+FROM node:18-alpine
+# :v18.14.2
+
+# RUN apt-get update 
+# RUN apt  install -y nodejs
+# RUN apt install -y npm
+# RUN apt-get install curl -y
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+# RUN .  bash
+# RUN . ~/.bashrc
+# RUN . /usr/bin/bash"
+# RUN . bash
+# RUN nvm  install  lts/hydrogen
+# создание директории приложения
+# RUN mkdir -p /var/www/html/
+WORKDIR /usr/src/app
+
+# установка зависимостей
+# символ астериск ("*") используется для того чтобы по возможности
+# скопировать оба файла: package.json и package-lock.json
+COPY package*.json ./
+
+RUN npm install     
+# Если вы создаете сборку для продакшн
+RUN npm ci --only=production
+
+# копируем исходный код
+COPY . .
+
+EXPOSE 3000
+CMD [ "npm",  "start"]

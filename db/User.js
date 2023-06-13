@@ -12,11 +12,15 @@ module.exports = function (sequelize) {
       type: Sequelize.STRING,
       allowNull: false
     },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     token: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    password: {
+    name: {
       type: Sequelize.STRING,
       allowNull: false
     },
@@ -29,19 +33,37 @@ module.exports = function (sequelize) {
       defaultValue: "guest",
       allowNull: false
     },
-   
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
+
+
     age: {
       type: Sequelize.INTEGER,
       // allowNull: true
     },
-  },{
-    timestamps: false
-  })
-  
+    photo: {
+      type: Sequelize.STRING,
+      defaultValue: "default.jpg",
+      allowNull: false
+    },
+    status: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: true,
+    },
+    note_eml: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+      allowNull: true
+    },
+    note_tlg: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+      allowNull: true
+    }
+  },
+    {
+      timestamps: false
+    })
+
 }
 
 
