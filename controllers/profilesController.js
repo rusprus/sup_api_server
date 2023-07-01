@@ -67,6 +67,7 @@ exports.current = async function (req, res) {
           age: result.user.age,
           email:result.user.email,
           name:result.user.name,
+          login:result.user.login,
           photo:result.user.photo,
           role:result.user.role,
           status:result.user.status,

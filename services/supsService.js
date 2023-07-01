@@ -6,9 +6,7 @@ exports.add = async function (data, uid) {
     return await Sup.create({
         uid: uid,
         name: data.name,
-        sup_id: data.sup_id,
         model: data.model,
-        img: data.img,
         status: data.status
     }).then(function (result) {
         return {
@@ -24,45 +22,97 @@ exports.add = async function (data, uid) {
 }
 
 
-exports.update = async function (data, uid, img) {
-    console.log(data )
-    console.log(uid )
-    console.log(img )
-    return await Sup.findOne({
+exports.update = async function (data, uid) {
+
+    const oldSup = await Sup.findOne({
         where: {
             id: data.id,
             uid: uid
         }
-    }).then(async function (sup) {
-        if (!sup) {
+    })
+
+    if (!oldSup) {
+        return {
+            status: false
+        }
+    } else {
+        const result = await Sup.update({
+            name: data.name,
+            model: data.model,
+            status: data.status,
+        }, {
+            where: {
+                id: oldSup.id
+            }
+        })
+
+        if (result[0]) {
+
+            const newSup = await Sup.findOne({
+                where: {
+                    id: data.id,
+                    uid: uid
+                }
+            })
+
+            return {
+                sup: newSup.dataValues,
+                status: true
+            }
+        } else {
             return {
                 status: false
             }
-        } else {
-            return await Sup.update({
-                name: data.name,
-                model: data.model,
-                img: img,
-                status: data.status,
-            }, {
-                where: {
-                    id: sup.id
-                }
-            }).then((result) => {
-                if (result[0]) {
-                    return {
-                        sup: result[1],
-                        status: true
-                    }
-                } else {
-                    return {
-                        status: false
-                    }
-                }
-            }).catch((error => console.log(error)))
         }
-    }).catch((error => console.log(error)))
+    }
+}
 
+
+exports.updateImg = async function (data, uid, img) {
+
+    const oldSup = await Sup.findOne({
+        where: {
+            id: data.id,
+            uid: uid
+        }
+    })
+
+    if (!oldSup) {
+        return {
+            status: false
+        }
+    } else {
+
+        const result = await Sup.update({
+            img: img,
+        }, {
+            where: {
+                id: oldSup.id
+            }
+        })
+
+        if (result[0]) {
+
+            const newSup = await Sup.findOne({
+                where: {
+                    id: data.id,
+                    uid: uid
+                }
+            })
+
+            return {
+                sup: {
+                    img: newSup.dataValues.img,
+                    id: newSup.dataValues.id,
+                },
+                status: true
+            }
+        } else {
+            return {
+                status: false
+            }
+        }
+    }
 }
 
 
@@ -92,6 +142,21 @@ exports.all = async function (id) {
         if (data) {
             return {
                 sups: data,
+                status: true
+            }
+        } else {
+            return {
+                status: false
+            }
+        }
+    }).catch(err => console.log(err));
+}
+
+exports.findByPk = async function (id) {
+    return await Sup.findByPk(id).then(data => {
+        if (data) {
+            return {
+                sup: data,
                 status: true
             }
         } else {

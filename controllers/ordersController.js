@@ -29,7 +29,7 @@ exports.update = async function (req, res) {
   })
 };
 
-exports.delete = async function (req, res) {
+exports.del = async function (req, res) {
   OrdersService.delete(req.body, req.user.id).then((result) => {
     if (result.status) {
       res.json({ status: true })

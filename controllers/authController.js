@@ -124,3 +124,12 @@ exports.authByToken = (req, res, next) => {
     next()
   }
 }
+
+exports.checkUid = function (req, res, next) {
+
+      if (req.user) {
+          next()
+      } else {
+          res.json({ msg: 'error', status: false })
+      }
+};
