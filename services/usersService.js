@@ -60,6 +60,28 @@ exports.update = async function (data, id) {
 
 }
 
+exports.updateImg = async function (id, photo) {
+
+        const result = await User.update({
+            photo: photo,
+        }, {
+            where: {
+                id: id
+            }
+        })
+
+        if (result[0]) {
+            return {
+                photo,
+                status: true
+            }
+        } else {
+            return {
+                status: false
+            }
+        }
+}
+
 exports.delete = async function (user) {
     return await User.destroy({
         where: {

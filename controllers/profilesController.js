@@ -29,31 +29,21 @@ exports.update = async function (req, res) {
   })
 };
 
-// exports.update = async function (req, res) {
+exports.updateImg = async function (req, res) {
 
-//   let name = 'uploads/' + req.file.filename + '.jpg'
-//   await UsersService.update(req.body, req.user.id, name).then((result) => {
-//     if (result.status) {
-//       res.json({
-//         status: true
-//       })
-//     } else {
-//       res.json({
-//         status: false
-//       })
-//     }
-//   })
-// };
-
-// exports.delete = async function (req, res) {
-//   UsersService.delete(req.body, req.user.id).then((result) => {
-//     if (result.status) {
-//       res.json({ status: true })
-//     } else {
-//       res.json({ status: false })
-//     }
-//   }).catch(err => console.log(err));
-// }
+  await UsersService.updateImg(req.user.id, req.file.filename).then((result) => {
+    if (result.status) {
+      res.json({
+        photo: result.photo,
+        status: true
+      })
+    } else {
+      res.json({
+        status: false
+      })
+    }
+  })
+};
 
 // получение данных
 exports.current = async function (req, res) {
