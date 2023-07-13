@@ -3,9 +3,18 @@ const jwt = require("jsonwebtoken");
 const { tokenKey } = require("../config");
 
 const UsersService = require('../services/usersService')
+const validator = require('validator');
 
 
 exports.signup = function (req, res) {
+
+  if (validator.isEmpty(req.body.login) || validator.isEmpty(req.body.password) ||
+    validator.isEmpty(req.body.email || validator.isEmpty(req.body.name))) {
+    res.json({
+      status: false
+    })
+    next()
+  }
   UsersService.getByLogin(req.body.login).then(async (data) => {
     if (data.status) {
       res.json({
@@ -17,7 +26,6 @@ exports.signup = function (req, res) {
       user['hash'] = hash
 
       let result = await UsersService.add(user)
-      // console.log('Step 5')
       if (result.status) {
         res.json({
           user: result.user,
@@ -28,28 +36,35 @@ exports.signup = function (req, res) {
   })
 }
 
-exports.login = function (request, response) {
-  if (request.auth) {
-    response.json({
-      msg: 'Jast loggin',
+exports.login = function (req, res) {
+  if (validator.isEmpty(req.body.login) || validator.isEmpty(req.body.password)) {
+    res.json({
+      status: false
+    })
+    next()
+  }
+
+  if (req.auth) {
+    res.json({
+      msg: 'Just logged',
       status: false
     })
   }
   User.findOne({
     where: {
-      login: request.body.login
+      login: req.body.login
     },
   })
     .then(async function (data) {
       if (data === null) {
-        response.json({
+        res.json({
           msg: 'User not found',
           status: false
         })
       } else {
-        const correctPassword = await argon2.verify(data.password, request.body.password);
+        const correctPassword = await argon2.verify(data.password, req.body.password);
         if (!correctPassword) {
-          response.json({
+          res.json({
             msg: 'Incorrect password',
             status: false
           })
@@ -58,7 +73,7 @@ exports.login = function (request, response) {
           data.token = token
           await data.save()
           // console.log('Сохраненный токен ' + data.token)
-          response.json({
+          res.json({
             token: token,
             userRole: data.role,
             id: data.id,
@@ -77,7 +92,7 @@ exports.updatePass = async function (req, res) {
     let user = await UsersService.getById(req.user.id);
 
     const correctPassword = await argon2.verify(user.user.password, req.body.oldPass);
-      if (correctPassword) {
+    if (correctPassword) {
 
       user.user.password = await argon2.hash(req.body.newPass);
 
@@ -127,9 +142,9 @@ exports.authByToken = (req, res, next) => {
 
 exports.checkUid = function (req, res, next) {
 
-      if (req.user) {
-          next()
-      } else {
-          res.json({ msg: 'error', status: false })
-      }
+  if (req.user) {
+    next()
+  } else {
+    res.json({ msg: 'error', status: false })
+  }
 };
