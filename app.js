@@ -4,9 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+const http = require('http');
+const  chat  = require("./chat/index.js");
+const { Server } = require("socket.io");
 
-
-// var indexRouter = require('./routes/index');
 var indexRouter = require("./routes/indexRouter.js");
 var ordersRouter = require("./routes/ordersRouter.js");
 var supsRouter = require("./routes/supsRouter.js");
@@ -17,6 +18,16 @@ var { errorHandler } = require("./controllers/commonController.js")
 
 var app = express();
 
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  }
+});
+
+chat(io)
+
 process.env.VUE_APP_BASE_URL = 'http://api.spbsupboard.ru'
 
 app.use(logger('dev'));
@@ -25,7 +36,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://spbsupboard.ru");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -41,7 +52,6 @@ app.use('/profiles', checkUid, profilesRouter);
 app.use('/uploads', indexRouter);
 
 
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -49,4 +59,7 @@ app.use(function (req, res, next) {
 
 app.use(errorHandler)
 
-module.exports = app;
+const PORT = process.env.PORT || 3000
+server.listen(PORT, () => console.log(`server started on port $(PORT)`))
+
+// module.exports = server;

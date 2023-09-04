@@ -130,10 +130,33 @@ exports.getById = async function (id) {
             id: id
         }
     })
-    console.log('Step 12')
+    // console.log('Step 12')
 
     if (result) {
-        console.log('Step 13')
+        // console.log('Step 13')
+
+        return {
+            user: result.dataValues,
+            status: true
+        }
+    } else {
+        return {
+            status: false
+        }
+    }
+}
+
+exports.getByToken = async function (token) {
+    // console.log('Step 11')
+    let result = await User.findOne({
+        where: {
+            token: token
+        }
+    })
+    // console.log('Step 12')
+
+    if (result) {
+        // console.log('Step 13')
 
         return {
             user: result.dataValues,

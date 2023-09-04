@@ -117,8 +117,8 @@ exports.authByToken = (req, res, next) => {
   if (req.headers.xauthorization) {
     try {
 
-      console.log('req.headers.xauthorization')
-      console.log(req.headers.xauthorization)
+      // console.log('req.headers.xauthorization')
+      // console.log(req.headers.xauthorization)
 
       jwt.verify(
         req.headers.xauthorization.split(',')[0].split(' ')[1],

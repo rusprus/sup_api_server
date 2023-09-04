@@ -54,6 +54,7 @@ exports.current = async function (req, res) {
     await UsersService.getById(req.user.id).then((result) => {
       if (result.status) {
         let profile = {
+          id: result.user.id,
           age: result.user.age,
           email:result.user.email,
           name:result.user.name,
