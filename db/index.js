@@ -10,6 +10,7 @@ sequelize = new Sequelize("usersdb", "root", "admin", {
  
  User = require('./User')(sequelize)
  Order = require('./Order')(sequelize)
+ Client = require('./Client')(sequelize)
  Sup = require('./Sup')(sequelize)
  Msg = require('./Msg')(sequelize)
 // синхронизация с бд, после успшной синхронизации запускаем сервер
@@ -25,6 +26,7 @@ module.exports = {
   sequelize: sequelize,
   user: User,
   order: Order,
+  client: Client,
   sup: Sup,
   msg: Msg,
 } 

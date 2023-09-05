@@ -10,6 +10,7 @@ const { Server } = require("socket.io");
 
 var indexRouter = require("./routes/indexRouter.js");
 var ordersRouter = require("./routes/ordersRouter.js");
+var clientsRouter = require("./routes/clientsRouter.js");
 var supsRouter = require("./routes/supsRouter.js");
 var authRouter = require("./routes/authRouter.js");
 var profilesRouter = require("./routes/profilesRouter.js");
@@ -46,6 +47,7 @@ app.use(express.static(path.join(__dirname, '/uploads')));
 app.use(authByToken)
 
 app.use('/orders', checkUid, ordersRouter);
+app.use('/clients', checkUid, clientsRouter);
 app.use('/sups', checkUid, supsRouter);
 app.use('/auth', authRouter);
 app.use('/profiles', checkUid, profilesRouter);
