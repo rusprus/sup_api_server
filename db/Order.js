@@ -7,47 +7,48 @@ module.exports = function (sequelize) {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      // allowNull: true,
+      allowNull: false,
     },
     uid: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 0
+      allowNull: false,
+      // defaultValue: 0
     },
-    name: {
-      type: DataTypes.STRING,
+    client_id: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue:  'unknow'
-    },
-    dateStart: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue:  '2022-08-17'
-    },
-    dateEnd: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue:  '2022-08-17'
+      defaultValue: null
     },
     sup_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 1
+      allowNull: false,
+      // defaultValue: 1
     },
+    dateStart: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: '2022-08-17'
+    },
+    dateEnd: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: '2022-08-17'
+    },
+
     note: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
       defaultValue: 'note'
     },
     status: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       defaultValue: 1
     }
-  },{
+  }, {
     timestamps: false
   })
-  
+
 }
 
 

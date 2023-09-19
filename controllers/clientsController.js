@@ -1,5 +1,21 @@
 const ClientsService = require('../services/clientsService')
 
+exports.all = async function (req, res) {
+  
+  if (!req.user) {
+    res.json({ message: 'Accsses denied', status: false })
+  } else {
+    // console.log(req.user)
+    await ClientsService.all(req.user.id).then((result) => {
+      if (result.status) {
+        res.json({ clients: result.clients, status: true })
+      } else {
+        res.json({ status: false })
+      }
+    }).catch(err => console.log(err));
+  }
+
+};
 
 exports.add = async function (req, res) {
 
@@ -40,19 +56,3 @@ exports.del = async function (req, res) {
 }
 
 // получение данных
-exports.all = async function (req, res) {
-  
-  if (!req.user) {
-    res.json({ message: 'Accsses denied', status: false })
-  } else {
-    // console.log(req.user)
-    await ClientsService.all(req.user.id).then((result) => {
-      if (result.status) {
-        res.json({ clients: result.clients, status: true })
-      } else {
-        res.json({ status: false })
-      }
-    }).catch(err => console.log(err));
-  }
-
-};

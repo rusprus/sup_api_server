@@ -5,10 +5,10 @@ const Order = db.order;
 exports.add = async function (data, uid) {
     return await Order.create({
         uid: uid,
-        name: data.name,
+        client_id: data.client_id,
+        sup_id: data.sup_id,
         dateStart: data.dateStart,
         dateEnd: data.dateEnd,
-        sup_id: data.sup_id,
         note: data.note,
         status: data.status
     }).then(function (result) {
@@ -38,10 +38,11 @@ exports.update = async function (data, uid) {
             }
         } else {
             return await Order.update({
-                name: data.name,
+                uid: uid,
+                client_id: data.client_id,
+                sup_id: data.sup_id,
                 dateStart: data.dateStart,
                 dateEnd: data.dateEnd,
-                sup_id: data.sup_id,
                 note: data.note,
                 status: data.status,
             }, {

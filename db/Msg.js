@@ -32,9 +32,12 @@ module.exports = function (sequelize) {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 1
+    },
+    createdAt: {
+      type: DataTypes.STRING
     }
   },{
-    timestamps: false
+    // timestamps: true
   })
   
 }

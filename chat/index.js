@@ -7,17 +7,21 @@ module.exports = function (io) {
     getMessage,
     getAllMessage,
     updateMessage,
-    deleteMessage
+    deleteMessage,
+    setRoom
   } = require("./handlers")(io);
 
 
-  const onConnection = (socket) => {
+  const onConnection =  (socket) => {
+
+    
 
     socket.on("message:add", addMessage(socket));
     socket.on("message:get", getMessage);
-    socket.on("message:get-all", getAllMessage);
+    socket.on("message:get-all", getAllMessage(socket));
     socket.on("message:update", updateMessage);
-    socket.on("message:delete", deleteMessage);
+    socket.on("message:delete", deleteMessage); 
+    socket.on("message:set-room", setRoom(socket)); 
   }
 
   io.use(async (socket, next) => {
@@ -25,7 +29,7 @@ module.exports = function (io) {
       let token = socket.handshake.headers.xauthorization.split(" ")[1]
 
       const result = await getByToken(token)
-      
+
       socket.user = result.user
       // console.log(socket.handshake.query);
       next()

@@ -1,13 +1,32 @@
 // const { manager_id } = require("johnny-five/lib/fn");
 const db = require("../db");
 const Client = db.client;
+const User = db.user;
 
-exports.add = async function (data, manager_id) {
-    return await Client.create({
-        manager_id: manager_id,
-        fio: data.fio,
+exports.all = async function (id) {
+    return await User.findAll({
+        where: { mng_id: id }
+    }, { raw: true }).then(data => {
+        if (data) {
+            return {
+                clients: data,
+                status: true
+            }
+        } else {
+            return {
+                status: false
+            }
+        }
+    }).catch(err => console.log(err));
+}
+
+exports.add = async function (data, mng_id) {
+    return await User.create({
+        mng_id: mng_id,
+        name: data.name,
+        role:2,
         tlg: data.tlg,
-        notes: data.notes,
+        note: data.note,
     }).then(function (result) {
         return {
             client: result.dataValues,
@@ -80,22 +99,7 @@ exports.delete = async function (client, manager_id) {
     }).catch((error => console.log(error)))
 }
 
-exports.all = async function (id) {
-    return await Client.findAll({
-        where: { manager_id: id }
-    }, { raw: true }).then(data => {
-        if (data) {
-            return {
-                clients: data,
-                status: true
-            }
-        } else {
-            return {
-                status: false
-            }
-        }
-    }).catch(err => console.log(err));
-}
+
 
 
 
